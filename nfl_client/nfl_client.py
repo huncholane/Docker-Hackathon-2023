@@ -3,6 +3,7 @@ import time
 from browsermobproxy import Server
 from selenium import webdriver
 from pathlib import Path
+from .url_utils import urlparse_json, generate_openapi_spec
 import json
 import requests
 import os
@@ -18,6 +19,7 @@ class NFLClient():
     * `API_ROOT` - Root for nfl.com api endpoints
     * `HAR_DIR` - Storage directory for har files
     * `URL_JSON_PATH` - Path for json list of found api endpoints
+    * `OPENAPI_PATH` - Path for openapi yaml
     * `TOKEN_EXPIRE_RATE` - How many seconds to download a new auth token
     * `TOKEN_AUTH_TIMEOUT` - Timeout when searching har file for Authorization
 
@@ -40,6 +42,7 @@ class NFLClient():
     API_ROOT = 'https://api.nfl.com'
     HAR_DIR = Path('nfl_client_data/har_files')
     URL_JSON_PATH = Path('nfl_client_data/urls.json')
+    OPENAPI_PATH = Path('nfl_client_data/openapi.yaml')
     TOKEN_EXPIRE_RATE = 60*60
     TOKEN_AUTH_TIMEOUT = 10
 
@@ -55,10 +58,11 @@ class NFLClient():
     last_auth_download_time = 0
     headers = {}
 
-    def __init__(self):
+    def __init__(self, headless=True):
         os.makedirs(self.HAR_DIR, exist_ok=True)
+        self.headless = headless
 
-    def load_auth_token(self):
+    def load_auth_token(self, store_har=False):
         """Loads the auth token into the client."""
         if os.path.exists(self.AUTH_PATH):
             with open(self.AUTH_PATH, 'r') as f:
@@ -66,7 +70,10 @@ class NFLClient():
             self.auth_token = auth_json['token']
             self.last_auth_download_time = auth_json['time']
         if self.last_auth_download_time < time.time()-self.TOKEN_EXPIRE_RATE or not self.auth_token:
-            self.download_auth_token()
+            self.download_auth_token(store_har=store_har)
+        self.headers={
+            'Authorization': self.auth_token
+        }
 
     def prep_proxy(self, endpoint=None):
         """Prepares the driver and proxy to get the har"""
@@ -80,14 +87,14 @@ class NFLClient():
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument(f'--proxy-server={self.proxy.proxy}')
         chrome_options.add_argument('--ignore-certificate-errors')
-        chrome_options.add_argument('--headless')
+        if self.headless:
+            chrome_options.add_argument('--headless')
         self.driver = webdriver.Chrome(options=chrome_options)
         # Navigate to the website
         self.driver.get(endpoint)
-        self.driver.implicitly_wait(10)
 
         # Start capturing network traffic
-        self.proxy.new_har(f"nfl{time.time()}", options={'captureHeaders': True})
+        self.proxy.new_har(f"nfl{time.time()}", options={'captureHeaders': True, 'captureContent': False})
 
         # Create the path for storing har data
         try:
@@ -105,19 +112,18 @@ class NFLClient():
 
     def wait_for_auth_token(self):
         """Downloads the auth token using the scores page of nfl.com"""
-        # Wait for the header with the name "Authorization"
-        def get_auth_token():
-            start_time = time.time()
-            while time.time() - start_time < self.TOKEN_AUTH_TIMEOUT:
-                self.har = self.proxy.har
-                for entry in self.har['log']['entries']:
-                    request_headers = entry['request']['headers']
-                    for header in request_headers:
-                        if header['name'] == 'Authorization':
-                            return header['value']
-                time.sleep(1)
-            return None
-        self.auth_token = get_auth_token()
+        start_time = time.time()
+        while time.time() - start_time < self.TOKEN_AUTH_TIMEOUT:
+            # Capture the HAR once
+            self.har = self.proxy.har
+            for entry in self.har['log']['entries']:
+                request_headers = entry['request']['headers']
+                for header in request_headers:
+                    if header['name'] == 'Authorization':
+                        self.auth_token = header['value']
+                        return self.auth_token
+            time.sleep(1)
+        return None
 
     def store_auth_token(self):
         """Stores the current auth token"""
@@ -156,37 +162,24 @@ class NFLClient():
         self.store_har()
         self.close_proxy()
 
-        # Gather the list of endpoints
-        url_list = []
-        for entry in self.har['log']['entries']:
-            request = entry['request']
-            raw_url = request['url']
-            if self.API_ROOT in raw_url:
-                print(raw_url)
-                url_split = raw_url.split('?')
-                full_url = url_split[0]
-                new_endpoint = ''
-                base_split = full_url.split('.com') 
-                if len(base_split) > 1:
-                    new_endpoint = base_split[1]
-                param_list = []
-                if len(url_split) > 1:
-                    param_split = url_split[1].split('&')
-                    for param in param_split:
-                        param, val = param.split('=')
-                        param_list.append({
-                            'param': param,
-                            'val': val
-                        }) 
-                url_list.append({
-                    'raw_url': raw_url,
-                    'endpoint': new_endpoint,
-                    'params': param_list
-                })
+        # Load previous urls
+        url_json = {}
+        if os.path.exists(self.URL_JSON_PATH):
+            with open(self.URL_JSON_PATH, 'r') as f:
+                url_json = json.load(f)
 
-        # Store the url list json
+        # Gather the list of endpoints
+        for entry in self.har['log']['entries']:
+            if self.API_ROOT in entry['request']['url']:
+                url_json.update(urlparse_json(entry['request']['url']))
+
+        # Store the url json
         with open(self.URL_JSON_PATH, 'w') as f:
-            json.dump(url_list, f)
+            json.dump(url_json, f)
+
+        # Store the url openapi
+        with open(self.OPENAPI_PATH, 'w') as f:
+            f.write(generate_openapi_spec(url_json))
 
     def request(self, endpoint) -> dict:
         """Request an endpoint"""

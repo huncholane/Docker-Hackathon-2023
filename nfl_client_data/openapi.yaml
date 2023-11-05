@@ -1,0 +1,175 @@
+info:
+  title: NFL API
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  /content/v1/videos:
+    get:
+      parameters:
+      - description: The clipType parameter
+        example: Preview
+        in: query
+        name: clipType
+        schema:
+          type: string
+      - description: The season parameter
+        example: 2023
+        in: query
+        name: season
+        schema:
+          type: integer
+      - description: The seasonType parameter
+        example: REG
+        in: query
+        name: seasonType
+        schema:
+          type: string
+      - description: The week parameter
+        example: 9
+        in: query
+        name: week
+        schema:
+          type: integer
+      - description: The sort parameter
+        example: contentDate:desc
+        in: query
+        name: sort
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+  /content/v1/videos/replays:
+    get:
+      parameters:
+      - description: The gameId parameter
+        example: b07ea540-f053-11ed-b4a7-bab79e4492fa
+        in: query
+        name: gameId
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+  /fe-store/instances:
+    get:
+      parameters:
+      - description: The query parameter
+        example: query{viewer{instances(ids:["48ca44cb-212e-4dfd-a277-1d40f26b0ed1"],label:""){edges{node{name,items{id,name,image{id,src,name,alt},links{id,url,name,text},summary,title,category},title,type}}}}}
+        in: query
+        name: query
+        schema:
+          type: string
+      - description: The variables parameter
+        example: '{"FE_STORE_INSTANCE_NAMESPACE":"WEB.NDC","FE_STORE_TYPE_NAME":"CardList","FE_STORE_TYPE_NAMESPACE":"WEB"}'
+        in: query
+        name: variables
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+  /football/v2/games/season/2023/seasonType/REG/week/10:
+    get:
+      parameters:
+      - description: The withExternalIds parameter
+        example: 'true'
+        in: query
+        name: withExternalIds
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successful response
+  /football/v2/games/{id}:
+    get:
+      parameters:
+      - description: The id parameter
+        example: b07ee5cd-f053-11ed-b4a7-bab79e4492fa
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The withExternalIds parameter
+        example: 'true'
+        in: query
+        name: withExternalIds
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successful response
+  /football/v2/standings:
+    get:
+      parameters:
+      - description: The seasonType parameter
+        example: REG
+        in: query
+        name: seasonType
+        schema:
+          type: string
+      - description: The week parameter
+        example: 8
+        in: query
+        name: week
+        schema:
+          type: integer
+      - description: The season parameter
+        example: 2023
+        in: query
+        name: season
+        schema:
+          type: integer
+      - description: The limit parameter
+        example: 100
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+  /football/v2/stats/live/game-summaries/{id}:
+    get:
+      parameters:
+      - description: The id parameter
+        example: b07ee5cd-f053-11ed-b4a7-bab79e4492fa
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+  /live/v1/livestreams:
+    get:
+      parameters:
+      - description: The contentType parameter
+        example: AUDIO
+        in: query
+        name: contentType
+        schema:
+          type: string
+      - description: The endTime parameter
+        example: '2023-11-06T08:00:00.000Z'
+        in: query
+        name: endTime
+        schema:
+          type: string
+      - description: The startTime parameter
+        example: '2023-11-04T07:00:00.000Z'
+        in: query
+        name: startTime
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+  /play/v1/asset/L5P64hq7cI6KLFiWM_XVSA:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
