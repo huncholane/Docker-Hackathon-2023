@@ -2,6 +2,7 @@
 har_files
 auth.json
 *.log
+/.postgres
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
