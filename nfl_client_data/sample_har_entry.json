@@ -1,0 +1,97 @@
+{
+  "pageref": "nfl1699174821.5444176",
+  "startedDateTime": "2023-11-05T01:00:21.816-08:00",
+  "request": {
+    "method": "GET",
+    "url": "https://api.nfl.com/football/v2/games/b07eaa67-f053-11ed-b4a7-bab79e4492fa?withExternalIds=true",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      { "name": "Host", "value": "api.nfl.com" },
+      { "name": "Connection", "value": "keep-alive" },
+      {
+        "name": "sec-ch-ua",
+        "value": "\"Chromium\";v=\"118\", \"HeadlessChrome\";v=\"118\", \"Not=A?Brand\";v=\"99\""
+      },
+      { "name": "sec-ch-ua-mobile", "value": "?0" },
+      {
+        "name": "Authorization",
+        "value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjbGllbnRJZCI6ImU1MzVjN2MwLTgxN2YtNDc3Ni04OTkwLTU2NTU2ZjhiMTkyOCIsImNsaWVudEtleSI6IjRjRlVXNkRtd0pwelQ5TDdMckczcVJBY0FCRzVzMDRnIiwiaXNzIjoiTkZMIiwiZGV2aWNlSWQiOiI3OGE4N2IxMi0zODY2LTRkYTQtYTNjYi1kZjNjZjkzMTg0MWIiLCJwbGFucyI6W3sicGxhbiI6ImZyZWUiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMjQtMTEtMDQiLCJzb3VyY2UiOiJORkwiLCJzdGFydERhdGUiOiIyMDIzLTExLTA1Iiwic3RhdHVzIjoiQUNUSVZFIiwidHJpYWwiOmZhbHNlfV0sIkRpc3BsYXlOYW1lIjoiV0VCX0RFU0tUT1BfREVTS1RPUCIsIk5vdGVzIjoiIiwiZm9ybUZhY3RvciI6IkRFU0tUT1AiLCJsdXJhQXBwS2V5IjoiU1pzNTdkQkdSeGJMNzI4bFZwN0RZUSIsInBsYXRmb3JtIjoiREVTS1RPUCIsInByb2R1Y3ROYW1lIjoiV0VCIiwiY2l0eSI6ImFwcGxlIHZhbGxleSIsImNvdW50cnlDb2RlIjoiVVMiLCJkbWFDb2RlIjoiODAzIiwiaG1hVGVhbXMiOlsiMTA0MDI1MTAtODkzMS0wZDVmLTk4MTUtNzliYjc5NjQ5YTY1IiwiMTA0MDI1MjAtOTZiZi1lOWYyLTRmNjgtODUyMWNhODk2MDYwIiwiMTA0MDQ0MDAtM2IzNS0wNzNmLTE5N2UtMTk0YmI4MjQwNzIzIl0sInJlZ2lvbiI6IkNBIiwiYnJvd3NlciI6IkNocm9tZSBIZWFkbGVzcyIsImNlbGx1bGFyIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJwcm9kdWN0aW9uIiwicm9sZXMiOlsiZnJlZSJdLCJleHAiOjE2OTkxNzg0MTd9.lJfctj51PargxhflTdOAs4LQh_iv6S6Kemgfp5y21uE"
+      },
+      {
+        "name": "User-Agent",
+        "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/118.0.5993.120 Safari/537.36"
+      },
+      { "name": "sec-ch-ua-platform", "value": "\"Windows\"" },
+      { "name": "Accept", "value": "*/*" },
+      { "name": "Origin", "value": "https://www.nfl.com" },
+      { "name": "Sec-Fetch-Site", "value": "same-site" },
+      { "name": "Sec-Fetch-Mode", "value": "cors" },
+      { "name": "Sec-Fetch-Dest", "value": "empty" },
+      { "name": "Referer", "value": "https://www.nfl.com/" },
+      { "name": "Accept-Encoding", "value": "gzip, deflate, br" }
+    ],
+    "queryString": [{ "name": "withExternalIds", "value": "true" }],
+    "headersSize": 1686,
+    "bodySize": 0,
+    "comment": ""
+  },
+  "response": {
+    "status": 200,
+    "statusText": "OK",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      { "name": "Connection", "value": "keep-alive" },
+      { "name": "Content-Length", "value": "728" },
+      { "name": "Content-Type", "value": "application/json" },
+      { "name": "Content-Encoding", "value": "gzip" },
+      { "name": "Via", "value": "1.1 varnish, 1.1 varnish" },
+      { "name": "Cache-Control", "value": "max-age=60" },
+      { "name": "Accept-Ranges", "value": "bytes" },
+      { "name": "Date", "value": "Sun, 05 Nov 2023 09:00:21 GMT" },
+      { "name": "Age", "value": "47" },
+      {
+        "name": "X-Served-By",
+        "value": "cache-bur-kbur8200174-BUR, cache-bur-kbur8200059-BUR"
+      },
+      { "name": "X-Cache", "value": "HIT, HIT" },
+      { "name": "X-Cache-Hits", "value": "6, 1" },
+      { "name": "X-Timer", "value": "S1699174821.267120,VS0,VE1" },
+      { "name": "Vary", "value": "Accept-Encoding" },
+      { "name": "Access-Control-Allow-Origin", "value": "*" },
+      {
+        "name": "Access-Control-Allow-Methods",
+        "value": "PUT,POST,OPTIONS,GET,PATCH,DELETE"
+      },
+      {
+        "name": "Access-Control-Allow-Headers",
+        "value": "Authorization,Content-Type,Cache-Control,nfl_session"
+      }
+    ],
+    "content": {
+      "size": 1484,
+      "mimeType": "application/json",
+      "text": "{\"id\":\"b07eaa67-f053-11ed-b4a7-bab79e4492fa\",\"homeTeam\":{\"id\":\"10402310-a47e-10ea-7442-16b633633637\",\"currentLogo\":\"https://static.www.nfl.com/{formatInstructions}/league/api/clubs/logos/KC\",\"fullName\":\"Kansas City Chiefs\"},\"awayTeam\":{\"id\":\"10402700-1662-d8ad-f45c-0b0ea460d045\",\"currentLogo\":\"https://static.www.nfl.com/{formatInstructions}/league/api/clubs/logos/MIA\",\"fullName\":\"Miami Dolphins\"},\"category\":null,\"date\":\"2023-11-05\",\"time\":\"2023-11-05T14:30:00Z\",\"broadcastInfo\":{\"homeNetworkChannels\":[\"NFL NETWORK\"],\"awayNetworkChannels\":[\"NFL NETWORK\"],\"internationalWatchOptions\":[{\"countryCode\":\"CA\",\"broadcasters\":[\"DAZN Canada\",\"RDS\",\"TSN\"]},{\"countryCode\":\"GB\",\"broadcasters\":[\"Sky Sports\",\"NFL Game Pass on DAZN\"]},{\"countryCode\":\"MX\",\"broadcasters\":[\"NFL Game Pass on DAZN\"]},{\"countryCode\":\"DE\",\"broadcasters\":[\"NFL Game Pass on DAZN\",\"DAZN Germany (OTT)\",\"RTL\"]},{\"countryCode\":\"AU\",\"broadcasters\":[\"NFL Game Pass on DAZN\",\"ESPN\",\"TVNZ+\"]},{\"countryCode\":\"FR\",\"broadcasters\":[\"NFL Game Pass on DAZN\",\"beIN 2\",\"6Play\"]},{\"countryCode\":\"BR\",\"broadcasters\":[\"NFL Game Pass on DAZN\",\"ESPN2\"]}],\"territory\":\"NATIONAL\"},\"neutralSite\":null,\"venue\":{\"id\":\"00082031-5500-35b5-a67a-7f374ebf7168\",\"name\":\"Frankfurt Stadium\"},\"season\":2023,\"seasonType\":\"REG\",\"status\":\"SCHEDULED\",\"week\":9,\"weekType\":\"REG\",\"externalIds\":[{\"source\":\"elias\",\"id\":\"2023110500\"},{\"source\":\"gsis\",\"id\":\"59296\"},{\"source\":\"slug\",\"id\":\"dolphins-at-chiefs-2023-reg-9\"}],\"ticketUrl\":null,\"ticketVendors\":[]}",
+      "comment": ""
+    },
+    "redirectURL": "",
+    "headersSize": 595,
+    "bodySize": 728,
+    "comment": ""
+  },
+  "cache": {},
+  "timings": {
+    "comment": "",
+    "connect": -1,
+    "receive": 0,
+    "dns": -1,
+    "wait": 65,
+    "blocked": -1,
+    "send": 0,
+    "ssl": -1
+  },
+  "serverIPAddress": "151.101.129.152",
+  "comment": "",
+  "time": 65
+}

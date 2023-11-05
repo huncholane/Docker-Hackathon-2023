@@ -1,6 +1,7 @@
 import yaml
 from urllib.parse import urlparse, parse_qs
 import re
+import json
 
 
 id_re = re.compile(
@@ -51,7 +52,16 @@ def urlparse_json(url):
     }
 
 
+def har_entry_parse(entry):
+    """Parses an entry from har file into openapi ready json"""
+    url_data = urlparse_json(entry['request']['url'])
+    endpoint = next(iter(url_data))
+    url_data[endpoint]['response_sample'] = json.loads(entry['response']['content']['text'])
+    return url_data
+
+
 def add_api_component(openapi_spec, path, info):
+    """Adds info for a single endpoint"""
     path_parameters = info['path_parameters']
     query_parameters = info['query_parameters']
     openapi_spec['paths'].update({
@@ -61,6 +71,11 @@ def add_api_component(openapi_spec, path, info):
                 'responses': {
                     '200': {
                         'description': 'Successful response',
+                        'content': {
+                            'application/json': {
+                                'example': info['response_sample']
+                            }
+                        }
                     },
                 },
             },
@@ -94,6 +109,7 @@ def add_api_component(openapi_spec, path, info):
 
 
 def generate_openapi_spec(url_json):
+    """Takes in a dict of url json data to format into openapi"""
     openapi_spec = {
         'openapi': '3.0.0',
         'info': {

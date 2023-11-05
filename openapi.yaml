@@ -1,0 +1,95 @@
+info:
+  title: NFL API
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  /football/v2/games/{id}:
+    get:
+      parameters:
+      - description: The id parameter
+        example: b07eaa67-f053-11ed-b4a7-bab79e4492fa
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The withExternalIds parameter
+        example: 'true'
+        in: query
+        name: withExternalIds
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                awayTeam:
+                  currentLogo: https://static.www.nfl.com/{formatInstructions}/league/api/clubs/logos/MIA
+                  fullName: Miami Dolphins
+                  id: 10402700-1662-d8ad-f45c-0b0ea460d045
+                broadcastInfo:
+                  awayNetworkChannels:
+                  - NFL NETWORK
+                  homeNetworkChannels:
+                  - NFL NETWORK
+                  internationalWatchOptions:
+                  - broadcasters:
+                    - DAZN Canada
+                    - RDS
+                    - TSN
+                    countryCode: CA
+                  - broadcasters:
+                    - Sky Sports
+                    - NFL Game Pass on DAZN
+                    countryCode: GB
+                  - broadcasters:
+                    - NFL Game Pass on DAZN
+                    countryCode: MX
+                  - broadcasters:
+                    - NFL Game Pass on DAZN
+                    - DAZN Germany (OTT)
+                    - RTL
+                    countryCode: DE
+                  - broadcasters:
+                    - NFL Game Pass on DAZN
+                    - ESPN
+                    - TVNZ+
+                    countryCode: AU
+                  - broadcasters:
+                    - NFL Game Pass on DAZN
+                    - beIN 2
+                    - 6Play
+                    countryCode: FR
+                  - broadcasters:
+                    - NFL Game Pass on DAZN
+                    - ESPN2
+                    countryCode: BR
+                  territory: NATIONAL
+                category: null
+                date: '2023-11-05'
+                externalIds:
+                - id: '2023110500'
+                  source: elias
+                - id: '59296'
+                  source: gsis
+                - id: dolphins-at-chiefs-2023-reg-9
+                  source: slug
+                homeTeam:
+                  currentLogo: https://static.www.nfl.com/{formatInstructions}/league/api/clubs/logos/KC
+                  fullName: Kansas City Chiefs
+                  id: 10402310-a47e-10ea-7442-16b633633637
+                id: b07eaa67-f053-11ed-b4a7-bab79e4492fa
+                neutralSite: null
+                season: 2023
+                seasonType: REG
+                status: SCHEDULED
+                ticketUrl: null
+                ticketVendors: []
+                time: '2023-11-05T14:30:00Z'
+                venue:
+                  id: 00082031-5500-35b5-a67a-7f374ebf7168
+                  name: Frankfurt Stadium
+                week: 9
+                weekType: REG
+          description: Successful response

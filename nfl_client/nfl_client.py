@@ -3,7 +3,7 @@ import time
 from browsermobproxy import Server
 from selenium import webdriver
 from pathlib import Path
-from .url_utils import urlparse_json, generate_openapi_spec
+from .url_utils import urlparse_json, generate_openapi_spec, har_entry_parse
 import json
 import requests
 import os
@@ -150,12 +150,12 @@ class NFLClient():
         if store_har:
             self.store_har()
 
-    def download_endpoints(self, endpoint=None):
+    def download_endpoints(self, endpoint=None, wait_time=20):
         """Downloads the endpoints found in har, stores json, updates readme, updates Mixin for the class"""
         if not endpoint:
             endpoint = self.AUTH_ENDPOINT
         self.prep_proxy(endpoint)
-        time.sleep(20)
+        time.sleep(wait_time)
         self.har = self.proxy.har
         self.wait_for_auth_token()
         self.store_auth_token()
@@ -171,7 +171,7 @@ class NFLClient():
         # Gather the list of endpoints
         for entry in self.har['log']['entries']:
             if self.API_ROOT in entry['request']['url']:
-                url_json.update(urlparse_json(entry['request']['url']))
+                url_json.update(har_entry_parse(entry))
 
         # Store the url json
         with open(self.URL_JSON_PATH, 'w') as f:
@@ -180,6 +180,8 @@ class NFLClient():
         # Store the url openapi
         with open(self.OPENAPI_PATH, 'w') as f:
             f.write(generate_openapi_spec(url_json))
+        
+        return url_json
 
     def request(self, endpoint) -> dict:
         """Request an endpoint"""
