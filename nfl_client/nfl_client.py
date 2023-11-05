@@ -94,7 +94,7 @@ class NFLClient():
         self.driver.get(endpoint)
 
         # Start capturing network traffic
-        self.proxy.new_har(f"nfl{time.time()}", options={'captureHeaders': True, 'captureContent': False})
+        self.proxy.new_har(f"nfl{time.time()}", options={'captureHeaders': True, 'captureContent': True})
 
         # Create the path for storing har data
         try:

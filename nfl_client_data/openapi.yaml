@@ -153,13 +153,13 @@ paths:
         schema:
           type: string
       - description: The endTime parameter
-        example: '2023-11-06T08:00:00.000Z'
+        example: '2023-11-07T08:00:00.000Z'
         in: query
         name: endTime
         schema:
           type: string
       - description: The startTime parameter
-        example: '2023-11-04T07:00:00.000Z'
+        example: '2023-11-01T07:00:00.000Z'
         in: query
         name: startTime
         schema:
