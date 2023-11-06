@@ -55,7 +55,6 @@ def urlparse_json(url):
     path_split = path.split('/')
     for item in path.split('/'):
         last = ''
-        type = None
         if last_ind > 0:
             last = path_split[last_ind]
         id_match = id_re.search(item)
@@ -63,7 +62,7 @@ def urlparse_json(url):
             uuid = id_match.group(0)
             name = unpluralize_word(last)+'_id'
             path = path.replace(uuid, add_brackets(name))
-            path_params = {name: {'type': 'string', 'example': uuid}}
+            path_params.update({name: {'type': 'string', 'example': uuid}})
         try: 
             int(item)
             name = unpluralize_word(last)
@@ -71,6 +70,10 @@ def urlparse_json(url):
             path_params.update({name: {'type': 'integer', 'example': int(item)}})
         except:
             pass
+        if item.isupper():
+            name = unpluralize_word(last)
+            path = path.replace(item, add_brackets(name))
+            path_params.update({name: {'type': 'string', 'example': item}})
         last_ind += 1
 
     return {
