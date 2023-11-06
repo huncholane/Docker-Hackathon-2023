@@ -2,6 +2,16 @@ import yaml
 from urllib.parse import urlparse, parse_qs
 import re
 import json
+import inflect
+
+def unpluralize_word(word):
+    p = inflect.engine()
+    singular_form = p.singular_noun(word)
+    return singular_form if singular_form else word
+
+
+def add_brackets(word):
+    return '{'+word+'}'
 
 
 id_re = re.compile(
@@ -10,7 +20,6 @@ id_re = re.compile(
 
 def urlparse_json(url):
     r = urlparse(url)
-    id_match = id_re.search(r.path)
     path = r.path
     query_params = {}
     for key, item in parse_qs(r.query).items():
@@ -39,11 +48,31 @@ def urlparse_json(url):
                 'example': example
             }
         })
+    
+    # Extract path parameters
     path_params = {}
-    if id_match:
-        uuid = id_match.group(0)
-        path = r.path.replace(uuid, '{id}')
-        path_params = {'id': {'type': 'string', 'example': uuid}}
+    last_ind = -1
+    path_split = path.split('/')
+    for item in path.split('/'):
+        last = ''
+        type = None
+        if last_ind > 0:
+            last = path_split[last_ind]
+        id_match = id_re.search(item)
+        if id_match:
+            uuid = id_match.group(0)
+            name = unpluralize_word(last)+'_id'
+            path = path.replace(uuid, add_brackets(name))
+            path_params = {name: {'type': 'string', 'example': uuid}}
+        try: 
+            int(item)
+            name = unpluralize_word(last)
+            path = path.replace(item, add_brackets(name))
+            path_params.update({name: {'type': 'integer', 'example': int(item)}})
+        except:
+            pass
+        last_ind += 1
+
     return {
         path: {
             'query_parameters': query_params,

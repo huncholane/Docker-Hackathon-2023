@@ -3,7 +3,7 @@
   "startedDateTime": "2023-11-05T01:00:21.816-08:00",
   "request": {
     "method": "GET",
-    "url": "https://api.nfl.com/football/v2/games/b07eaa67-f053-11ed-b4a7-bab79e4492fa?withExternalIds=true",
+    "url": "https://api.nfl.com/football/v2/games/season/32/blah/b07eaa67-f053-11ed-b4a7-bab79e4492fa?withExternalIds=true",
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headers": [
