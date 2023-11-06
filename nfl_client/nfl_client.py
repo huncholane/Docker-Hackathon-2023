@@ -1,5 +1,6 @@
 
 import time
+from urllib.parse import urljoin
 from browsermobproxy import Server
 from selenium import webdriver
 from pathlib import Path
@@ -183,12 +184,78 @@ class NFLClient():
         
         return url_json
 
-    def request(self, endpoint) -> dict:
+    def request(self, endpoint, params={}) -> dict:
         """Request an endpoint"""
         self.load_auth_token()
-        try:
-            return requests.get(endpoint, headers=self.headers)
-        except Exception as e:
-            return {
-                'error': e
-            }   
+        url = urljoin(self.API_ROOT, endpoint)
+        print(url)
+        return requests.get(url, headers=self.headers, params=params)
+
+    def get_week(self, season: int, week: int, seasonType='REG', withExternalIds=True) -> requests.Response:
+        """## Get summary of games during a week.
+        ### Args
+        * `season`: Year of the season (i.e. 2023)
+        * `week`: Week of the season (i.e. 3)
+        * `seasonType`: `REG` or `PRE`
+        * `withExternalIds`: boolean
+        """
+        url = f'/football/v2/games/season/{season}/seasonType/{seasonType}/week/{week}'
+        return self.request(url, {
+            'withExternalIds': withExternalIds
+        })
+
+    def get_game(self, game_id: str, withExternalIds=True) -> requests.Response:
+        """## Get game details.
+        ### Args
+        * `game_id`: Can be found iterating the week.
+        * `withExternalIds`: boolean
+        """
+        return self.request(f'/football/v2/games/{game_id}', {
+            'withExternalIds': withExternalIds
+        })
+
+    def get_standings(self, week: int, season: int, seasonType='REG', limit=100) -> requests.Response:
+        """## Get team standings.
+        ### Args
+        * `season`: Year of the standings (i.e. 2023)
+        * `week`: Week of the standings (i.e. 3)
+        * `seasonType`: `REG` or `PRE`
+        * `limit`: Max items to get
+        """
+        return self.request(f'/football/v2/standings', {
+            'season': season,
+            'week': week,
+            'seasonType': seasonType,
+            'limit': limit
+        })
+    
+    def get_game_summary(self, game_summary_id) -> requests.Request:
+        """## Get game results.
+        ### Args
+        * `game_summary_id`: Lookup id, can be found in `get_week`.
+        """
+        return self.request(f'/football/v2/stats/live/game-summaries/{game_summary_id}')
+    
+    def get_game_summaries(self, season: int, week: int, seasonType='REG') -> requests.Response:
+        """## Get game summaries for a week.
+        ## Args
+        * `season`: Season
+        * `week`: Week
+        * `seasonType`: `REG` or `PRE`
+        """
+        return self.request(f'/football/v2/stats/live/game-summaries', {
+            'season': season,
+            'week': week,
+            'seasonType': seasonType
+        })
+
+    def get_teams(self, season: int, limit=100) -> requests.Response:
+        """## Get teams in season.
+        ### Args
+        * `season`: Year
+        * `limit`: Query limit 
+        """
+        return self.request(f'/football/v2/teams/history', {
+            'season': season,
+            'limit': limit,
+        })
